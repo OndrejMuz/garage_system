@@ -25,4 +25,27 @@ public class CarService {
     public Optional<Car> getCarById(Long id) {
         return carRepository.findById(id);
     }
+
+    public Optional<Car> updateCar(Long id, Car updatedCar) {
+        return carRepository.findById(id).map(existingCar -> {
+            existingCar.setMake(updatedCar.getMake());
+            existingCar.setModel(updatedCar.getModel());
+            existingCar.setYearMade(updatedCar.getYearMade());
+            existingCar.setColor(updatedCar.getColor());
+            existingCar.setLicensePlate(updatedCar.getLicensePlate());
+            existingCar.setOwnerName(updatedCar.getOwnerName());
+            return carRepository.save(existingCar);
+        });
+    }
+
+    public boolean deleteCar(Long id) {
+        if (carRepository.existsById(id)) {
+            carRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 }
