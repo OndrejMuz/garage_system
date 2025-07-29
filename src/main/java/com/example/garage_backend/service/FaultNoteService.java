@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FaultNoteService {
@@ -30,5 +31,13 @@ public class FaultNoteService {
     public List<FaultNote> getNotesByCarId(Long carId) {
         return faultNoteRepository.findByCarId(carId);
     }
+
+    public Optional<FaultNote> toggleRepairedStatus(Long id) {
+        return faultNoteRepository.findById(id).map(note -> {
+            note.setRepaired(!note.isRepaired());  // 🔁 toggle it
+            return faultNoteRepository.save(note);
+        });
+    }
+
 }
 
